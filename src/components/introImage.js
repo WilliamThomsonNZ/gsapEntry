@@ -1,11 +1,13 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import { gsap } from "gsap";
 import { CustomEase } from "gsap/dist/CustomEase";
+import { images } from 'next.config';
 
 gsap.registerPlugin(CustomEase);
 
 
 const Intro = () => {
+    const [imagesLoaded, setImagesLoaded] = useState(false)
     gsap.registerPlugin(CustomEase);
     const imageContianer1 = useRef(null);
     const imageRef1 = useRef(null);
@@ -25,6 +27,8 @@ const Intro = () => {
     const heroImage = useRef(null);
 
     useEffect(() => {
+        console.log(imagesLoaded)
+        if (!imagesLoaded) return
         CustomEase.create("custom", "0.9, 0.12, 0.21, 0.9");
         const tl = gsap.timeline();
         //Image one
@@ -52,7 +56,7 @@ const Intro = () => {
         tl.fromTo(heroImage.current, { scale: 2.2 }, { scale: 1.2, duration: 2, delay: 0, ease: "custom" }, "<+=1");
         tl.fromTo("#topText span", { yPercent: 120 }, { yPercent: 0, duration: 2, stagger: 0.2, ease: "power4.inOut" }, "<")
         tl.fromTo("#bottomText span", { yPercent: 120 }, { yPercent: 0, duration: 2, stagger: 0.2, ease: "power4.inOut" }, "<")
-    }, [])
+    }, [imagesLoaded])
     return (
         <>
             <div ref={introContainer} className={"w-screen h-screen flex items-center justify-center"}>
@@ -85,7 +89,7 @@ const Intro = () => {
                     </article>
                     <article ref={imageContianer6} className={"block w-[450px] h-[350px] absolute top-[45%] left-[30%]"}>
                         <div className={"block w-full h-full overflow-hidden bg-orange-300"}>
-                            <img src={"/image6.jpg"} ref={imageRef6} className={"block w-full h-full object-cover"} />
+                            <img src={"/image6.jpg"} ref={imageRef6} className={"block w-full h-full object-cover"} onLoad={() => setImagesLoaded(true)} />
                         </div>
                     </article>
                 </div>
